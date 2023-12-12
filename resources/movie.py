@@ -9,6 +9,7 @@ from utils import check_password, hash_password
 
 class MoviesResources(Resource):
     
+    @jwt_required(optional=True)
     def get(self):
         try:
             connection = get_connection()
@@ -76,13 +77,11 @@ class MoviesResources(Resource):
                'count':len(result_list)},200
     
 
-class MovieReResources(Resource):
+class MovieResources(Resource):
 
-    def get(self):
+    def get(self,moveId):
         connection =get_connection()
-        moveId = request.args.get('movieId')
-        offset = request.args.get('offset')
-        limit = request.args.get('limit')
+        
         
         try:
             query = '''select m.id,m.title,m.summary,m.year,m.attendance,ifnull(avg(r.rating),0) as avg
@@ -91,7 +90,7 @@ class MovieReResources(Resource):
                             on r.movieId=m.id
                             group by r.movieId
                             having m.id= %s
-                            limit '''+str(offset)+''','''+str(limit)+'''
+                            
                             ;'''
             record = (moveId,)
     
@@ -126,9 +125,13 @@ class MovieReResources(Resource):
 
 class MovieReviewResources(Resource):
 
-    def get(self,move_Id):
+    def get(self):
 
         connection =get_connection()
+        moveId = request.args.get('movieId')
+        offset = request.args.get('offset')
+        limit = request.args.get('limit')
+        
         try:
             query = '''select m.title,u.nickname,u.gender,r.rating
                         from movie m
@@ -136,8 +139,9 @@ class MovieReviewResources(Resource):
                         on m.id=r.movieId
                         join user u
                         on r.userId=u.id
-                        where m.id=%s;'''
-            record = (move_Id,)
+                        where m.id=%s
+                        limit '''+str(offset)+''','''+str(limit)+''';'''
+            record = (moveId,)
     
             cursor = connection.cursor(dictionary=True)
             cursor.execute(query,record)
