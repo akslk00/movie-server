@@ -2,7 +2,7 @@ from flask import Flask
 from flask_jwt_extended import JWTManager, jwt_required
 from flask_restful import Api
 from config import Config
-from resources.movie import MovieResources, MovieReviewResources, MoviesResources
+from resources.movie import MovieResources, MovieReviewResources, MovieSearchResource, MoviesResources
 from resources.review import MyReviewResources, ReviewResources
 from resources.user import UserListResoyrces, UserLoginResource, UserLogoutResource
 
@@ -42,6 +42,8 @@ api.add_resource(MovieReviewResources,'/movie/review/')
 api.add_resource(ReviewResources,'/movie/<int:moveId>/review')
 
 api.add_resource(MyReviewResources,'/review/me')
+
+api.add_resource(MovieSearchResource,'/movie/serach')
 
 if __name__ == '__main__':
     app.run()

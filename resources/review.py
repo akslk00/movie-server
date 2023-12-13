@@ -5,7 +5,7 @@ from mysql_connection import get_connection
 from mysql.connector import Error
 
 class ReviewResources(Resource):
-
+    # 특정영화 리뷰 작성 
     @jwt_required()
     def post(self,moveId):
         data =request.get_json()
@@ -35,7 +35,7 @@ class ReviewResources(Resource):
         return{'result':'seccess'},200
     
 class MyReviewResources(Resource):
-
+    #내가 작성한 리뷰 보기
     @jwt_required()
     def get(self):
         user_id = get_jwt_identity()
