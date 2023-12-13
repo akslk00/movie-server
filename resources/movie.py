@@ -1,11 +1,9 @@
 from flask import request
-from flask_jwt_extended import create_access_token, get_jwt, get_jwt_identity, jwt_required
+from flask_jwt_extended import get_jwt_identity, jwt_required
 from flask_restful import Resource
 from mysql_connection import get_connection
 from mysql.connector import Error
 
-from email_validator import validate_email,EmailNotValidError
-from utils import check_password, hash_password
 
 class MoviesResources(Resource):
     #모든 영화리스트 가져오기
@@ -222,4 +220,4 @@ class MovieSearchResource(Resource):
                'count':len(result_list)},200
 
 
-    
+ 
